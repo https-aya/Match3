@@ -57,7 +57,7 @@ void GameOverScene_Update(void)
 		}
 		else
 		{
-			PlaySoundMem(GameOverSE.DX_PLAYTYPE_BACK);
+			PlaySoundMem(GameOverSE,DX_PLAYTYPE_BACK);
 			GameOverFlag = TRUE;
 		}
 	}
