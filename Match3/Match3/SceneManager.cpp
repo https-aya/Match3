@@ -86,16 +86,29 @@ void SceneManager_Update(void)
 	//各画面の更新処理
 	switch (Game_Mode)
 	{
-	case E_TITLE:
-		TitleScene_Update();
-		break;
-	case E_GAMEMAIN:
-		GameMainScene_Draw();
+		case E_TITLE:
+			TitleScene_Update();
+			break;
+		case E_GAMEMAIN:
+			GameMainScene_Draw();
+			break;
+		case E_GAME_CLEAR:
+			GameClearScene_Draw();
+			break;
+		case E_GAME_OVER:
+			GameOverScene_Draw();
+			break;
+		default:
+			break;
 	}
 }
 
 /***********************
-*ゲームクリア画面：描画処理
-* 引　数：なし
+*シーン管理機能：シーン切り替え処理
+* 引　数：変更するゲームモード
 * 戻り値：なし
 ************************/
+void Change_Scene(GAME_MODE mode)
+{
+	Next_Mode = mode;
+}
