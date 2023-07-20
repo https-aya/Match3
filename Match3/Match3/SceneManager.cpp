@@ -89,6 +89,8 @@ void SceneManager_Update(void)
 	case E_TITLE:
 		TitleScene_Update();
 		break;
+	case E_GAMEMAIN:
+		GameMainScene_Draw();
 	}
 }
 

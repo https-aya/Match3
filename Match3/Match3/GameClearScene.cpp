@@ -38,13 +38,13 @@ int GameClearScene_Initialize(void)
 	GameClearFlag = 0;
 
 		//エラーチェック
-		if (GameClearImage == -1)
+		if (GameClearImage == D_ERROR)		//-1をD_ERRORに変更×4
 		{
-			ret = -1;
+			ret = D_ERROR;
 		}
-		if (GameClearSE == -1)
+		if (GameClearSE == D_ERROR)
 		{
-			ret = -1;
+			ret = D_ERROR;
 		}
 	return ret;
 }
