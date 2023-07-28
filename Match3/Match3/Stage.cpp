@@ -306,50 +306,209 @@ void SelectBlock(void)
 Block[Select[TMP_CURSOR].y + 1][Select[TMP_CURSOR].x + 1].image;
 		Block[Select[TMP_CURSOR].y + 1][Select[TMP_CURSOR].x + 1].image =
 TmpBlock;
+
+		//連鎖が3つ以上か調べる
+		Result = 0;
+		Result += combo_check(Select[NEXT_CURSOR].y + 1,
+Select[NEXT_CURSOR].x + 1);
+		Result += combo_check(Select[TMP_CURSOR].y + 1,
+Select[TMP_CURSOR].x + 1);
+
+		//連鎖が3未満なら選択ブロックを元に戻す
+		if (Result == 0)
+		{
+
+			int TmpBlock = Block[Select[NEXT_CURSOR].y +
+1][Select[NEXT_CURSOR].x + 1].image;
+			Block[Select[NEXT_CURSOR].y + 1][Select[NEXT_CURSOR].x +
+1].image = Block[Select[TMP_CURSOR].y + 1][Select[TMP_CURSOR].x +1].image;
+			Block[Select[TMP_CURSOR].y + 1][Select[TMP_CURSOR].x +
+1].image = TmpBlock;
+		}
+		else
+		{
+
+			//連鎖が３つ以上ならブロックを消しブロック移動処理へ移行する
+			Stage_State = 1;
+		}
+
+		//次にクリックできるようにClockFlagを0にする
+		ClickStatus = E_NONE;
 	}
 }
 
 /***********************
-*ゲームクリア画面：描画処理
+*ステージ鮮魚機能 ; フェードアウト処理
 * 引　数：なし
 * 戻り値：なし
 ************************/
+void FadeOutBlock(void)
+{
+	static int BlendMode = 255;
+	int i, j;
+
+	//フェードアウト効果音
+	if (CheckSoundMem(FadeOutSE) == 0)
+	{
+		PlaySoundMem(FadeOutSE, DX_PLAYTYPE_BACK);
+	}
+
+	//描画モードをアルファブレンドにする
+	SetDrawBlendMode(DX_BLENDGRAPHTYPE_ALPHA, BlendMode);
+	for (i = 1; i < HEIGHT - 1; i++)
+	{
+		for (j = 1; j < WIDTH - 1; j++)
+		{
+			if (Block[i][j].image == 0)
+			{
+				DrawGraph(Block[i][j].x, Block[i][j].y,
+BlockImage[Block[i][j].backup], TRUE);
+			}
+		}
+	}
+
+	//描画モードをノーブレンドにする
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	BlendMode -= 5;
+
+	if (BlendMode == 0)
+	{
+		BlendMode = 255;
+		Stage_State = 2;
+		StopSoundMem(FadeOutSE);
+	}
+}
 
 /***********************
-*ゲームクリア画面：描画処理
+*ステージ制御機能 : ブロック移動処理
 * 引　数：なし
 * 戻り値：なし
 ************************/
+void MoveBlock(void)
+{
+	int i, j, k;
+	//ブロック移動効果音
+	PlaySoundMem(MoveBlockSE, DX_PLAYTYPE_BACK);
+
+	//↓へ移動する処理
+	for (i = 1; i < HEIGHT - 1; i++)
+	{
+		for (j = 1; j < WIDTH - 1; j++)
+		{
+			if (Block[i][j].image == 0)
+			{
+				for (k = i; k > 0; k--)
+				{
+					Block[k][j].image = Block[k - 1][j].image;
+					Block[k - 1][j].image = 0;
+				}
+			}
+		}
+	}
+
+	//空のブロックを生成する処理
+	for (i = 1; i < HEIGHT - 1; i++)
+	{
+		for (j = 1; j < WIDTH - 1; j++)
+		{
+			if (Block[i][j].image == 0)
+			{
+				Block[i][j].image = GetRand(7) + 1;
+			}
+		}
+	}
+
+	//連鎖チェックへ移行する
+	Stage_State = 3;
+}
 
 /***********************
-*ゲームクリア画面：描画処理
+*ステージ制御機能 : 連鎖チェック処理
 * 引　数：なし
 * 戻り値：なし
 ************************/
+void CheckBlock(void)
+{
+	int Result = 0;
+	int i, j;
+
+	//ブロック連鎖チェック
+	for (i = 1; i < HEIGHT - 1; i++)
+	{
+		for (j = 1; j < WIDTH - 1; j++)
+		{
+			Result += combo_check(i, j);
+		}
+	}
+
+	//連鎖がなくなればブロック選択へ
+	//そうでなければブロック移動並行して連鎖チェックを継続する
+	if (Result == 0)
+	{
+		//クリアチェック処理へ移行する
+		Stage_State = 4;
+	}
+	else
+	{
+		//連鎖が３つ以上ならブロックを消しブロック移動処理へ移行する
+		Stage_State = 1;
+	}
+}
 
 /***********************
-*ゲームクリア画面：描画処理
+*ステージ制御機能 : クリア条件チェック処理
 * 引　数：なし
 * 戻り値：なし
 ************************/
+void CheckClear(void)
+{
+
+	int i;
+
+	for (i = 0; i < ITEM_MAX; i++)
+	{
+		if (Item[i] >= Stage_Mission)
+		{
+			ClearFlag = TRUE;
+			break;
+		}
+	}
+	if (ClearFlag != TRUE)
+	{
+		Stage_State = 0;
+	}
+}
 
 /***********************
-*ゲームクリア画面：描画処理
+*ステージ制御機能 : ステージステータス情報取得処理
 * 引　数：なし
 * 戻り値：なし
 ************************/
+int Get_StageState(void)
+{
+	return Stage_State;
+}
 
 /***********************
-*ゲームクリア画面：描画処理
+*ステージ制御機能：ミッション情報取得処理
 * 引　数：なし
-* 戻り値：なし
+* 戻り値：ミッションがクリアしているか
 ************************/
+int Get_StageClearFlag(void)
+{
+	return ClearFlag;
+}
 
 /***********************
-*ゲームクリア画面：描画処理
+*ステージ制御機能:ミッション情報取得処理
 * 引　数：なし
 * 戻り値：なし
 ************************/
+int Get_StageScore(void)
+{
+	return Stage_Score;
+}
 
 /***********************
 *ゲームクリア画面：描画処理
