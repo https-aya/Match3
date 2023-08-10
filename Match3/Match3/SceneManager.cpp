@@ -31,7 +31,7 @@ GAME_MODE Next_Mode;			//ゲームモード情報（次）
 * 引　数：ゲームモード情報
 * 戻り値：なし
 ************************/
-int SceneManager_Initialze(GAME_MODE mode)
+int SceneManager_Initialize(GAME_MODE mode)
 {
 	int Read_Error;
 
@@ -88,6 +88,33 @@ void SceneManager_Update(void)
 	{
 		case E_TITLE:
 			TitleScene_Update();
+			break;
+		case E_GAMEMAIN:
+			GameMainScene_Update();
+			break;
+		case E_GAME_CLEAR:
+			GameClearScene_Update();
+			break;
+		case E_GAME_OVER:
+			GameOverScene_Update();
+			break;
+		default:
+			break;
+	}
+}
+
+/***********************
+*シーン管理機能：描画処理
+* 引　数：なし
+* 戻り値：なし
+************************/
+void SceneManager_Draw(void)
+{
+	//各画面の描画処理
+	switch (Game_Mode)
+	{
+		case E_TITLE:
+			TitleScene_Draw();
 			break;
 		case E_GAMEMAIN:
 			GameMainScene_Draw();
