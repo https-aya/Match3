@@ -40,7 +40,7 @@ int GameMainScene_Initialize(void)
 	int i;
 
 	//画像読込み
-	LoadDivGraph("images/number.ping", NUMBER_IMAGE_MAX,
+	LoadDivGraph("images/number.png", NUMBER_IMAGE_MAX,
 NUMBER_IMAGE_MAX, 1, 60, 120, NumberImage);
 
 	//ステージ機能初期化
@@ -56,6 +56,7 @@ NUMBER_IMAGE_MAX, 1, 60, 120, NumberImage);
 		}
 	}
 
+	
 	//ゲームプレイが初回かどうか?
 	if (GameCount == 0)
 	{

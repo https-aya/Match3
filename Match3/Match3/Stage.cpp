@@ -82,9 +82,9 @@ int StageInitialize(void)
 	int i;
 
 	//画像読み込み
-	LoadDivGraph("images/block.ping", BLOCK_IMAGE_MAX, BLOCK_IMAGE_MAX, 1,
+	LoadDivGraph("images/block.png", BLOCK_IMAGE_MAX, BLOCK_IMAGE_MAX, 1,
 		BLOCKSIZE, BLOCKSIZE, BlockImage);
-	StageImage = LoadGraph("images/stage.ping");
+	StageImage = LoadGraph("images/stage.png");
 
 	//音源読み込み
 	ClickSE = LoadSoundMem("sounds/click_se.mp3");
@@ -145,7 +145,7 @@ void StageDraw(void) {
 	DrawGraph(0, 0, StageImage, FALSE);
 
 	//アイテムの取得個数を描画
-	for (int i = 0; ITEM_MAX; i++)
+	for (int i = 0; i < ITEM_MAX; i++)
 	{
 		DrawRotaGraph(540, 245 + i * 30, 0.5f, 0, BlockImage[i + 1], TRUE, 0);
 		DrawFormatString(580, 235 + i * 30, 0xffffff, "%3d", Item[i]);
@@ -154,7 +154,7 @@ void StageDraw(void) {
 	//ブロックを描画
 	for (int i = 0; i < HEIGHT; i++)
 	{
-		for (int j = 0; j < WIDTH; i++)
+		for (int j = 0; j < WIDTH; j++)
 		{
 			if (Block[i][j].flg == TRUE && Block[i][j].image != NULL)
 			{
@@ -305,8 +305,8 @@ TmpBlock;
 		Result = 0;
 		Result += combo_check(Select[NEXT_CURSOR].y + 1,
 Select[NEXT_CURSOR].x + 1);
-		Result += combo_check(Select[TMP_CURSOR].y + 1,
-Select[TMP_CURSOR].x + 1);
+		Result += combo_check(Select[TMP_CURSOR].x + 1,
+Select[TMP_CURSOR].y + 1);
 
 		//連鎖が3未満なら選択ブロックを元に戻す
 		if (Result == 0)
@@ -338,7 +338,7 @@ Select[TMP_CURSOR].x + 1);
 ************************/
 void FadeOutBlock(void)
 {
-	static int BlendMode = 255;
+	static int BlendMode = 250;
 	int i, j;
 
 	//フェードアウト効果音
@@ -364,11 +364,11 @@ BlockImage[Block[i][j].backup], TRUE);
 	//描画モードをノーブレンドにする
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	BlendMode -= 5;
+	BlendMode -= 125;
 
 	if (BlendMode == 0)
 	{
-		BlendMode = 255;
+		BlendMode = 250;
 		Stage_State = 2;
 		StopSoundMem(FadeOutSE);
 	}
