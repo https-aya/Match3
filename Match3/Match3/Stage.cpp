@@ -458,16 +458,61 @@ void CheckBlock(void)
 void CheckClear(void)
 {
 
-	int i;
+	int i = 0;
 
-	for (i = 0; i < ITEM_MAX; i++)
+	switch (i)
 	{
-		if (Item[i] >= Stage_Mission)
-		{
+		case 0:
+			if (Item[i] < Stage_Mission)
+			{
+				break;
+			}
+			i++;
+		case 1:
+			if (Item[i] < Stage_Mission)
+			{
+				break;
+			}
+			i++;
+		case 2:
+			if (Item[i] < Stage_Mission)
+			{
+				break;
+			}
+			i++;
+		case 3:
+			if (Item[i] < Stage_Mission)
+			{
+				break;
+			}
+			i++;
+		case 4:
+			if (Item[i] < Stage_Mission)
+			{
+				break;
+			}
+			i++;
+		case 5:
+			if (Item[i] < Stage_Mission)
+			{
+				break;
+			}
+			i++;
+		case 6:
+			if (Item[i] < Stage_Mission)
+			{
+				break;
+			}
+			i++;
+		case 7:
+			if (Item[i] < Stage_Mission)
+			{
+				break;
+			}
 			ClearFlag = TRUE;
-			break;
-		}
 	}
+
+
 	if (ClearFlag != TRUE)
 	{
 		Stage_State = 0;
