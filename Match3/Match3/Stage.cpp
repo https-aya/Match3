@@ -580,17 +580,6 @@ int combo_check(int y, int x)
 	{
 		restore_block();			//‚RŒÂ–¢–ž‚È‚ç–ß‚·
 	}
-	else
-	{
-		int CountW = 0;
-		int ColorW = 0;
-		save_block();
-		combo_check_w(y, x, &CountW, &ColorW);
-		if (CountW < 3)
-		{
-			restore_block();
-		}
-	}
 
 	//‰¡•ûŒü‚Ìƒ`ƒFƒbƒN
 	int CountW = 0;
@@ -600,17 +589,6 @@ int combo_check(int y, int x)
 	if (CountW < 3)
 	{
 		restore_block();
-	}
-	else
-	{
-		int CountH = 0;
-		int ColorH = 0;
-		save_block();
-		combo_check_h(y, x, &CountH, &ColorH);
-		if (CountH < 3)
-		{
-			restore_block();			//‚RŒÂ–¢–ž‚È‚ç–ß‚·
-		}
 	}
 
 	//‚R‚ÂˆÈã‚Å•À‚ñ‚Å‚¢‚é‚©H
