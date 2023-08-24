@@ -305,8 +305,8 @@ TmpBlock;
 		Result = 0;
 		Result += combo_check(Select[NEXT_CURSOR].y + 1,
 Select[NEXT_CURSOR].x + 1);
-		Result += combo_check(Select[TMP_CURSOR].x + 1,
-Select[TMP_CURSOR].y + 1);
+		Result += combo_check(Select[TMP_CURSOR].y + 1,
+Select[TMP_CURSOR].x + 1);
 
 		//連鎖が3未満なら選択ブロックを元に戻す
 		if (Result == 0)

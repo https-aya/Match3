@@ -67,8 +67,12 @@ NUMBER_IMAGE_MAX, 1, 60, 120, NumberImage);
 	}
 	else
 	{
-		GameLevel++;			//ゲームレベルの更新
-		Set_StageMission(3);	//ミッションを増やす
+		GameCount++;
+		if (GameCount % 2 != 0) 
+		{
+			GameLevel++;			//ゲームレベルの更新
+			Set_StageMission(3);	//ミッションを増やす
+		}	
 	}
 	GameTime = TIMELIMIT;		//制限時間の初期化
 
