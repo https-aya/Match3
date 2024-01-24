@@ -3,7 +3,7 @@
 *マッチ3ゲームの作成
 *********************/
 #include "DxLib.h"
-#include"FreamControl.h"
+#include "FreamControl.h"
 #include"InputControl.h"
 #include"SceneManager.h"
 
